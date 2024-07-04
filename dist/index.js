@@ -31569,18 +31569,13 @@ function main() {
             const context = github.context;
             if (context.payload.issue) {
                 const issue = context.payload.issue;
-                const issueJsonString = JSON.stringify(issue);
-                core.debug(`Issue: ${issueJsonString}`);
-                const body = {
-                    'raw': issueJsonString,
+                core.debug(`Issue: ${JSON.stringify(issue)}`);
+                const response = yield axios_1.default.post(botUrl, {
+                    'raw': issue,
                     'password': password,
                     'verify': true
-                };
-                const headers = {
-                    'Content-Type': 'application/json'
-                };
-                const response = yield axios_1.default.post(botUrl, JSON.stringify(body), { headers: headers });
-                core.info(`Response: ${response.data}`);
+                });
+                core.info(`Response: ${JSON.stringify(response.data.predict)}`);
                 core.info('HTTP request sent successfully');
             }
             else {
