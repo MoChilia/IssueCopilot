@@ -12,18 +12,21 @@ async function main() {
         if (context.payload.issue) {
             const issue = context.payload.issue;
             const issueJsonString = JSON.stringify(issue);
-            core.info(`Issue: ${issueJsonString}`);
+            core.debug(`Issue: ${issueJsonString}`);
             const body = {
                 'raw': issueJsonString, 
                 'password': password, 
                 'verify': true
             }
+            const headers = { 
+                'Content-Type': 'application/json' 
+            };
             const response = await axios.post(botUrl, body);
             core.info(`Response: ${response.data}`);
             core.info('HTTP request sent successfully');
         }
         else {
-            core.setFailed("No issue found in the context payload. Please check your workflow trigger is 'issue'");
+            core.setFailed("No issue found in the context payload. Please check your workflow trigger is 'issues'");
         }
     }
     catch (error: any) {
