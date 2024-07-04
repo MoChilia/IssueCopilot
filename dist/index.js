@@ -31569,6 +31569,7 @@ function main() {
             const context = github.context;
             if (context.payload.issue) {
                 const issue = context.payload.issue;
+                core.info(`Issue: ${issue}`);
                 core.info(`Issue title: ${issue.title}`);
                 core.info(`Issue number: ${issue.number}`);
                 core.info(`Issue body: ${issue.body}`);
