@@ -21,7 +21,7 @@ async function main() {
             const headers = { 
                 'Content-Type': 'application/json' 
             };
-            const response = await axios.post(botUrl, body, { headers: headers });
+            const response = await axios.post(botUrl, JSON.stringify(body), { headers: headers });
             core.info(`Response: ${response.data}`);
             core.info('HTTP request sent successfully');
         }

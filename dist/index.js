@@ -31579,7 +31579,7 @@ function main() {
                 const headers = {
                     'Content-Type': 'application/json'
                 };
-                const response = yield axios_1.default.post(botUrl, body);
+                const response = yield axios_1.default.post(botUrl, JSON.stringify(body), { headers: headers });
                 core.info(`Response: ${response.data}`);
                 core.info('HTTP request sent successfully');
             }
