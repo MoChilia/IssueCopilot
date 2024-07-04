@@ -11,17 +11,18 @@ async function main() {
         const context = github.context;
         if (context.payload.issue) {
             const issue = context.payload.issue;
-            core.info(`Issue: ${issue}`);
-            core.info(`Issue title: ${issue.title}`);
-            core.info(`Issue number: ${issue.number}`);
-            core.info(`Issue body: ${issue.body}`);
-            const body = {
-                'raw': issue.body, 
-                'password': password, 
-                'verify': true
-            }
-            await axios.post(botUrl, body);
-            core.info('HTTP request sent successfully');
+            const issueJsonString = JSON.stringify(issue);
+            core.info(`Issue: ${issueJsonString}`);
+            // core.info(`Issue title: ${issue.title}`);
+            // core.info(`Issue number: ${issue.number}`);
+            // core.info(`Issue body: ${issue.body}`);
+            // const body = {
+            //     'raw': issue.body, 
+            //     'password': password, 
+            //     'verify': true
+            // }
+            // await axios.post(botUrl, body);
+            // core.info('HTTP request sent successfully');
         }
         else {
             core.setFailed("No issue found in the context payload. Please check your workflow trigger is 'issue'");
