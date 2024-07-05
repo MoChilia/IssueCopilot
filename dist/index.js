@@ -31579,7 +31579,8 @@ function main() {
                 'verify': true
             });
             core.info('The HTTP request was sent to GitHub issue copilot successfully');
-            const prediction = response.data.predict;
+            const data = JSON.parse(response.data);
+            const prediction = data.predict;
             core.info(`Response: ${prediction}`);
             core.info(`message: ${response.data.message}`);
             if (!prediction || prediction.length === 0) {
