@@ -7,22 +7,43 @@ async function main() {
     try {
         const password = core.getInput('password');
         //TODO: use github token for authentication
+        const token = core.getInput('github-token', {required: true})
+        
         const botUrl = 'https://similar-bot-test.calmhill-ec497646.eastus.azurecontainerapps.io/search/';
         const context = github.context;
-        if (context.payload.issue) {
-            const issue = context.payload.issue;
-            core.debug(`Issue: ${JSON.stringify(issue)}`);
-            const response = await axios.post(botUrl, {
-                'raw': issue, 
-                'password': password, 
-                'verify': true
-            });
-            core.info(`Response: ${JSON.stringify(response.data.predict)}`);
-            core.info('HTTP request sent successfully');
+        if (!context.payload.issue) {
+            throw new Error("No issue found in the context payload. Please check your workflow trigger is 'issues'");
         }
-        else {
-            core.setFailed("No issue found in the context payload. Please check your workflow trigger is 'issues'");
+        const issue = context.payload.issue;
+        core.debug(`Issue: ${JSON.stringify(issue)}`);
+        const response = await axios.post(botUrl, {
+            'raw': issue, 
+            'password': password, 
+            'verify': true
+        });
+        core.info('The HTTP request was sent to GitHub issue copilot successfully');
+        
+        const prediction = response.data.predict;
+        core.debug(`Response: ${JSON.stringify(prediction)}`);
+        if (!prediction || prediction.length === 0) {
+            core.info('No prediction found');
+            return;
         }
+        let message = 'Here are some similar issues that might help you. Please check if they can solve your problem.\n'
+        for (const item in prediction) {
+            message += `- #${item[item.length -1]}\n`
+        }
+        message = message.trimEnd();
+
+        const octokit = github.getOctokit(token);  
+        const issueNumber = context.payload.issue.number;  
+        const { owner, repo } = github.context.repo;
+        await octokit.rest.issues.createComment({  
+            owner,
+            repo,
+            issue_number: issueNumber,
+            body: message,
+        });  
     }
     catch (error: any) {
         core.setFailed(error.message);
