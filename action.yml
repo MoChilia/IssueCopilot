@@ -1,0 +1,13 @@
+name: 'GitHub Issue Copilot Action'
+description: 'Get similar issues by GitHub Issue Copilot'
+inputs:
+  password:  
+    description: 'Password to access the GitHub Issue Copilot'
+    required: true
+  github-token:
+    description: 'The GitHub token used to create an authenticated client'
+    default: ${{ github.token }}
+    required: false
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
