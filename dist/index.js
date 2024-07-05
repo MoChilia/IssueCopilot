@@ -31587,9 +31587,11 @@ function main() {
             }
             let message = 'Here are some similar issues that might help you. Please check if they can solve your problem.\n';
             for (const item in prediction) {
+                core.info(`item: ${item}`);
                 message += `- #${item[item.length - 1]}\n`;
             }
             message = message.trimEnd();
+            core.info(`message: ${message}`);
             const octokit = github.getOctokit(token);
             const issueNumber = context.payload.issue.number;
             const { owner, repo } = github.context.repo;
