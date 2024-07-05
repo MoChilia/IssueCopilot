@@ -23,8 +23,9 @@ async function main() {
         });
         core.info('The HTTP request was sent to GitHub issue copilot successfully');
         
-        const prediction = response.data.predict;
+        const prediction: any[][] = response.data.predict;  
         core.debug(`Response: ${JSON.stringify(prediction)}`);
+        core.info(`message: ${response.data.message}`);
         if (!prediction || prediction.length === 0) {
             core.info('No prediction found');
             return;
