@@ -31597,8 +31597,17 @@ function main() {
                 owner,
                 repo,
                 issue_number: issueNumber,
-                body: message,
+                body: message
             });
+            console.log(`Comment sended to issue #${issueNumber}`);
+            const labels = ["Similar-Issue"];
+            yield octokit.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: issueNumber,
+                labels
+            });
+            console.log(`Label added to issue #${issueNumber}`);
         }
         catch (error) {
             core.setFailed(error.message);
