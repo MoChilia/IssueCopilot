@@ -23,21 +23,17 @@ async function main() {
         });
         core.info('The HTTP request was sent to GitHub issue copilot successfully');
         
-        const data = JSON.parse(response.data);  
-        const prediction: any[][] = data.predict;  
-        core.info(`Response: ${prediction}`);
-        core.info(`message: ${response.data.message}`);
+        const prediction: any[][] = response.data.predict;  
+        core.debug(`Response: ${prediction}`);
         if (!prediction || prediction.length === 0) {
             core.info('No prediction found');
             return;
         }
         let message = 'Here are some similar issues that might help you. Please check if they can solve your problem.\n'
-        for (const item in prediction) {
-            core.info(`item: ${item}`);
+        for (const item of prediction) {
             message += `- #${item[item.length -1]}\n`
         }
         message = message.trimEnd();
-        core.info(`message: ${message}`);
 
         const octokit = github.getOctokit(token);  
         const issueNumber = context.payload.issue.number;  
