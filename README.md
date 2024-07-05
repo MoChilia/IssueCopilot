@@ -8,26 +8,28 @@ To use the GitHub Issue Copilot, follow these steps:
 
 1. Contact AzPyCLI@microsoft.com to get the password for the copilot. We will assist you with onboarding and add your repository to the database.
 
+1. Add the `COPILOT_PASSWORD` as a secret to your repository. Go to `Settings > Secrets and variables > Actions > New repository secret`.
+
 1. Add the following workflow in your repository.
 
-```yaml
-#File: .github/workflows/RunIssueCopilot.yml
-name: Run GitHub issue copilot
-on:
-  issues:
-    types: [opened]
+    ```yaml
+    #File: .github/workflows/RunIssueCopilot.yml
+    name: Run GitHub issue copilot
+    on:
+    issues:
+        types: [opened]
 
-jobs:
-  Issue:
-    permissions:
-        issues: write
-    runs-on: ubuntu-latest
-    steps:
-    - name: Run GitHub issue copilot
-        uses: MoChilia/IssueCopilot@main
-        with:
-           password: ${{secrets.COPILOT_PASSWORD}}
-```
+    jobs:
+    Issue:
+        permissions:
+            issues: write
+        runs-on: ubuntu-latest
+        steps:
+        - name: Run GitHub issue copilot
+            uses: MoChilia/IssueCopilot@main
+            with:
+            password: ${{secrets.COPILOT_PASSWORD}}
+    ```
 
 ## Notes for developers
 
