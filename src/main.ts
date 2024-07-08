@@ -35,10 +35,14 @@ async function main() {
             'issue': issue.number,
             'password': password
         })).data.result;
-        core.info('Check it this issue was already replied by the copilot: ' + if_replied.toString());
+        core.info('Check if this issue was already replied by the copilot: ' + if_replied.toString());
 
         if (if_replied) {
-            core.info('This issue was already replied by the copilot. Skip this issue.');
+            await axios.post(botUrl + '/update_issue/', {
+                'raw': issue,
+                'password': password
+            })
+            core.info('This issue was already replied by the copilot. Update the edited content to copilot and skip this issue.');
             return;
         }
 
