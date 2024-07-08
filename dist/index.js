@@ -31572,9 +31572,10 @@ function main() {
             }
             const issue = context.payload.issue;
             core.debug(`Issue: ${JSON.stringify(issue)}`);
-            let { owner, repo } = github.context.repo;
-            repo = repo.toLowerCase();
-            core.info(`Owner/Repo: ${owner}/${repo}`);
+            const { owner, repo } = github.context.repo;
+            let owner_repo = `${owner}/${repo}`;
+            owner_repo = owner_repo.toLowerCase();
+            core.debug(`owner/repo: ${owner_repo}`);
             const if_closed = issue.state === 'closed';
             if (if_closed) {
                 yield axios_1.default.post(botUrl + '/update_issue/', {
@@ -31585,7 +31586,7 @@ function main() {
                 return;
             }
             const if_replied = (yield axios_1.default.post(botUrl + '/check_reply/', {
-                'repo': repo,
+                'repo': owner_repo,
                 'issue': issue.number,
                 'password': password
             })).data.result;
@@ -31628,7 +31629,7 @@ function main() {
             });
             core.info(`Label added to issue #${issueNumber}`);
             yield axios_1.default.post(botUrl + '/add_reply/', {
-                'repo': repo,
+                'repo': owner_repo,
                 'issue': issue.number,
                 'password': password
             });

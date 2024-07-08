@@ -15,9 +15,10 @@ async function main() {
         }
         const issue = context.payload.issue;
         core.debug(`Issue: ${JSON.stringify(issue)}`);
-        let { owner, repo } = github.context.repo;
-        repo = repo.toLowerCase();
-        core.info(`Owner/Repo: ${owner}/${repo}`);
+        const { owner, repo } = github.context.repo;
+        let owner_repo = `${owner}/${repo}`;
+        owner_repo = owner_repo.toLowerCase();
+        core.debug(`owner/repo: ${owner_repo}`);
 
         const if_closed: boolean = issue.state === 'closed';
         if (if_closed) {
@@ -30,7 +31,7 @@ async function main() {
         }
 
         const if_replied: boolean = (await axios.post(botUrl + '/check_reply/', {
-            'repo': repo,
+            'repo': owner_repo,
             'issue': issue.number,
             'password': password
         })).data.result;
@@ -80,7 +81,7 @@ async function main() {
         core.info(`Label added to issue #${issueNumber}`);
 
         await axios.post(botUrl + '/add_reply/', {
-            'repo': repo,
+            'repo': owner_repo,
             'issue': issue.number,
             'password': password
         });
