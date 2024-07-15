@@ -17,7 +17,7 @@ To use the GitHub Issue Copilot, follow these steps:
     name: Run GitHub issue copilot
     on:
     issues:
-        types: [opened]
+        types: [opened, edited, closed]
 
     jobs:
     Issue:
