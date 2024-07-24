@@ -31565,7 +31565,7 @@ function main() {
             const password = core.getInput('password');
             //TODO: use github token for authentication
             const token = core.getInput('github-token', { required: true });
-            const botUrl = 'https://similar-bot-test.calmhill-ec497646.eastus.azurecontainerapps.io';
+            const botUrl = 'https://similar-bot-prod.calmhill-ec497646.eastus.azurecontainerapps.io';
             const context = github.context;
             if (!context.payload.issue) {
                 throw new Error("No issue found in the context payload. Please check your workflow trigger is 'issues'");
@@ -31604,7 +31604,7 @@ function main() {
                 'password': password,
                 'verify': true
             })).data.predict;
-            core.info(' Search by the GitHub issue copilot successfully.');
+            core.info('Search by the GitHub issue copilot successfully.');
             core.debug(`Response: ${prediction}`);
             if (!prediction || prediction.length === 0) {
                 core.info('No prediction found');
